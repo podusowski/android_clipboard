@@ -13,7 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    # Build
     - name: Setup Java JDK
       uses: actions/setup-java@v4.5.0
       with:
@@ -24,7 +23,7 @@ jobs:
     - name: Install Cargo NDK
       run: cargo install cargo-ndk
     - name: Build
-      run: cargo ndk --target arm64-v8a
+      run: cargo ndk --target arm64-v8a check
 
     # Tests and lints.
     - name: Run tests
