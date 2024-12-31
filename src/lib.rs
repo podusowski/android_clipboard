@@ -1,3 +1,6 @@
+#![doc = include_str!("../README.md")]
+#![deny(clippy::unwrap_used, rustdoc::broken_intra_doc_links)]
+
 use jni::{
     objects::{JObject, JString},
     AttachGuard, JavaVM,
@@ -19,6 +22,7 @@ impl From<jni::errors::Error> for Error {
     }
 }
 
+/// Put the given text into the clipboard.
 pub fn set_text(text: String) -> Result<(), Error> {
     let context = AndroidContext::new();
     let vm = context.vm()?;
@@ -45,6 +49,7 @@ pub fn set_text(text: String) -> Result<(), Error> {
     Ok(())
 }
 
+/// Get the text from the clipboard.
 pub fn get_text() -> Result<String, Error> {
     let context = AndroidContext::new();
     let vm = context.vm()?;
@@ -88,6 +93,7 @@ pub fn get_text() -> Result<String, Error> {
     Ok(text.into())
 }
 
+/// Clear the clipboard.
 pub fn clear() -> Result<(), Error> {
     let context = AndroidContext::new();
     let vm = context.vm()?;
