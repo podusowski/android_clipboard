@@ -103,6 +103,7 @@ pub fn clear() -> Result<(), Error> {
     Ok(())
 }
 
+/// Wrapper around `ndk_context::AndroidContext` to hide some unsafe code.
 struct AndroidContext(ndk_context::AndroidContext);
 
 impl AndroidContext {
