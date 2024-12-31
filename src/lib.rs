@@ -1,4 +1,7 @@
-use jni::{objects::{JObject, JString}, AttachGuard, JavaVM};
+use jni::{
+    objects::{JObject, JString},
+    AttachGuard, JavaVM,
+};
 use ndk_context::android_context;
 use thiserror::Error;
 
@@ -17,6 +20,28 @@ impl From<jni::errors::Error> for Error {
 }
 
 pub fn set_text(text: String) -> Result<(), Error> {
+    let context = AndroidContext::new();
+    let vm = context.vm()?;
+    let mut env = vm.attach_current_thread()?;
+    let clipboard_manager = clipboard_manager(&mut env)?;
+
+    let label = env.new_string("label")?;
+    let text = env.new_string(text)?;
+
+    let clip_data = env.call_static_method(
+        "android/content/ClipData",
+        "newPlainText",
+        "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Landroid/content/ClipData;",
+        &[(&label).into(), (&text).into()],
+    )?;
+
+    env.call_method(
+        clipboard_manager,
+        "setPrimaryClip",
+        "(Landroid/content/ClipData;)V",
+        &[(&clip_data).into()],
+    )?;
+
     Ok(())
 }
 
@@ -64,6 +89,11 @@ pub fn get_text() -> Result<String, Error> {
 }
 
 pub fn clear() -> Result<(), Error> {
+    let context = AndroidContext::new();
+    let vm = context.vm()?;
+    let mut env = vm.attach_current_thread()?;
+    let clipboard_manager = clipboard_manager(&mut env)?;
+    env.call_method(clipboard_manager, "clearPrimaryClip", "()V", &[])?;
     Ok(())
 }
 
