@@ -88,6 +88,11 @@ pub fn get_text() -> Result<String, Error> {
     let text = env
         .call_method(item, "getText", "()Ljava/lang/CharSequence;", &[])?
         .l()?;
+
+    let text = env
+        .call_method(&text, "toString", "()Ljava/lang/String;", &[])?
+        .l()?;
+
     let text = JString::from(text);
     let text = env.get_string(&text)?;
     Ok(text.into())
