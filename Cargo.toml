@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 repository = "https://github.com/podusowski/android_clipboard"
 description = "Access Android clipboard"
-categories = ["android", "gui"]
+categories = ["gui"]
 authors = ["Piotr Podusowski <podusowski@gmail.com>"]
 license = "MIT"
 
